@@ -80,10 +80,12 @@ function attaque(){
 
 listeMonstre.forEach(montreAct => {
     montreAct[0].onclick = function() {
-        ennemis.children[0]
+        monstreAct.style.borderColor = "red";
         monstreVictime = montreAct;
     }
 });
+
+//modif pour qu'une border rouge apparaisse au clic
 
 choixPerso();
 
