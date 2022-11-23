@@ -80,8 +80,10 @@ function attaque(){
 
 listeMonstre.forEach(montreAct => {
     montreAct[0].onclick = function() {
-        monstreAct.style.borderColor = "red";
         monstreVictime = montreAct;
+        console.log(monstreVictime);
+        monstreVictime[0].style.border = "thick solid #FF0000";
+        
     }
 });
 
