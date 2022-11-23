@@ -1,35 +1,91 @@
-maDiv = document.getElementById("maDiv");
-valeurResultat = document.getElementById("valeurResultat");
-afficheAction = document.getElementById("afficheAction");
-
-
-
 personnages = document.getElementById("persos");
-console.log(personnages);
+ennemis = document.getElementById("monstres");
 
 zoneTexte = document.getElementById("zoneTexte");
-console.log(zoneTexte);
 
-maDiv.onclick = function() {
-    valeurResultat.innerHTML = parseInt(valeurResultat.innerHTML)+10*compt;
-    afficheAction.innerHTML = "J'ai ajouté "+10*compt+" !";
-    compt += 1;
+listeMonstre =  [
+                [ennemis.children[0],"1","Gaelle",30,500,"waiting"],
+                [ennemis.children[1],"2","John",10,2000,"waiting"],
+                [ennemis.children[2],"3","Yohann",20,1000,"waiting"]
+                ];
+
+listePerso =    [
+                [personnages.children[0],"1","Jean",100,100,150,"waiting","Epée furtive","inut","alive"],
+                [personnages.children[1],"2","Rika",90,110,40,"waiting","Soin","inut","alive"],
+                [personnages.children[2],"3","Lubin",150,80,250,"waiting","Attaque Lourde","inut","alive"],
+                [personnages.children[3],"4","Claude",120,150,2,"waiting","Resistance aux dégats","inut","alive"]
+                ];
+
+texteAtq = zoneTexte.children[1];
+texteDef = zoneTexte.children[2];
+texteSpe = zoneTexte.children[3];
+
+actualPerso = listePerso[0];
+monstreVictime = 0;
+
+function choixPerso(){
+    affichageOption();
 }
 
-function choix() {
-    console.log(personnages.children);
-    for (let lePerso of personnages.children){
-        choix = affichageOption(lePerso);
-    };
+texteAtq.onclick = function() {
+    actualPerso[6] = "atq";
+    actualPerso[8] = "atq";
+    tourSuivant()
 }
 
-function affichageOption(perso) {
+texteDef.onclick = function() {
+    actualPerso[6] = "def";
+    actualPerso[8] = "def";
+    tourSuivant()
+}
+
+texteSpe.onclick = function() {
+    actualPerso[6] = "spe";
+    actualPerso[8] = "spe";
+    tourSuivant()
+}
+
+function tourSuivant(){
+    if (listePerso.indexOf(actualPerso) < 3){
+        actualPerso = listePerso[(listePerso.indexOf(actualPerso)+1)];
+        choixPerso();
+    }
+    else {
+        zoneTexte.style.display = 'none';
+        actualPerso = listePerso[0];
+
+    }
+}
+
+function affichageOption() {
     //zoneTexte.firstElementChild.innerHTML = "Que voulez vous que personnage fasse ?"
-    zoneTexte.firstElementChild.innerHTML = "Que voulez vous que "+perso.id+" fasse ?"
-    zoneTexte.style.display = 'flex'
+    zoneTexte.firstElementChild.innerHTML = "Que voulez vous que "+actualPerso[2]+" fasse ?";
+    zoneTexte.style.display = 'flex';
 }
 
-choix();
+function attaque(){
+    listePerso.forEach(persoAct => {
+        if (persoAct[6] == "atq"){
+
+        }
+        if (persoAct[6] == "def"){
+            
+        }
+        if (persoAct[6] == "spe"){
+            
+        }
+    });
+}
+
+
+listeMonstre.forEach(montreAct => {
+    montreAct[0].onclick = function() {
+        ennemis.children[0]
+        monstreVictime = montreAct;
+    }
+});
+
+choixPerso();
 
 
 
