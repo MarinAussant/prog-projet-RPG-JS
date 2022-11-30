@@ -21,52 +21,30 @@ texteDef = zoneTexte.children[2];
 texteSpe = zoneTexte.children[3];
 
 actualPerso = listePerso[0];
-monstreVictime = 0;
+monstreVictime = listeMonstre[0];
 
-function choixPerso(){
-    affichageOption();
+function choixPerso(laZoneDeTexte , actPerso){
+    laZoneDeTexte.firstElementChild.innerHTML = "Que voulez vous que "+actPerso[2]+" fasse ?";
+    laZoneDeTexte.style.display = 'flex';
 }
 
-texteAtq.onclick = function() {
-    actualPerso[6] = "atq";
-    actualPerso[8] = "atq";
-    tourSuivant()
-}
-
-texteDef.onclick = function() {
-    actualPerso[6] = "def";
-    actualPerso[8] = "def";
-    tourSuivant()
-}
-
-texteSpe.onclick = function() {
-    actualPerso[6] = "spe";
-    actualPerso[8] = "spe";
-    tourSuivant()
-}
-
-function tourSuivant(){
+function tourSuivant(laZoneDeTexte){
     if (listePerso.indexOf(actualPerso) < 3){
         actualPerso = listePerso[(listePerso.indexOf(actualPerso)+1)];
-        choixPerso();
+        choixPerso(laZoneDeTexte,actualPerso);
     }
     else {
-        zoneTexte.style.display = 'none';
+        laZoneDeTexte.style.display = 'none';
         actualPerso = listePerso[0];
-
+        attaque();
     }
-}
-
-function affichageOption() {
-    //zoneTexte.firstElementChild.innerHTML = "Que voulez vous que personnage fasse ?"
-    zoneTexte.firstElementChild.innerHTML = "Que voulez vous que "+actualPerso[2]+" fasse ?";
-    zoneTexte.style.display = 'flex';
 }
 
 function attaque(){
     listePerso.forEach(persoAct => {
         if (persoAct[6] == "atq"){
-
+            monstreVictime[4] -= persoAct[3];
+            console.log(monstreVictime[4]);
         }
         if (persoAct[6] == "def"){
             
@@ -77,19 +55,59 @@ function attaque(){
     });
 }
 
+texteAtq.onclick = function() {
+    actualPerso[6] = "atq";
+    actualPerso[8] = "atq";
+    tourSuivant(zoneTexte);
+}
 
+texteDef.onclick = function() {
+    actualPerso[6] = "def";
+    actualPerso[8] = "def";
+    tourSuivant(zoneTexte);
+}
+
+texteSpe.onclick = function() {
+    actualPerso[6] = "spe";
+    actualPerso[8] = "spe";
+    tourSuivant(zoneTexte);
+}
+
+listeMonstre[0][0].onclick = function(){
+    monstreVictime[0].style.border = "none";
+    monstreVictime = listeMonstre[0]
+    console.log(monstreVictime);
+    monstreVictime[0].style.border = "thick solid #FF0000";
+}
+
+listeMonstre[1][0].onclick = function(){
+    monstreVictime[0].style.border = "none";
+    monstreVictime = listeMonstre[1]
+    console.log(monstreVictime);
+    monstreVictime[0].style.border = "thick solid #FF0000";
+}
+
+listeMonstre[2][0].onclick = function(){
+    monstreVictime[0].style.border = "none";
+    monstreVictime = listeMonstre[2]
+    console.log(monstreVictime);
+    monstreVictime[0].style.border = "thick solid #FF0000";
+}
+
+/*
 listeMonstre.forEach(montreAct => {
-    montreAct[0].onclick = function() {
-        monstreVictime = montreAct;
+    montreAct[0].onclick = function() { 
+        monstreVictime = parseInt(monstreAct[1]);
         console.log(monstreVictime);
         monstreVictime[0].style.border = "thick solid #FF0000";
         
     }
 });
+*/
 
 //modif pour qu'une border rouge apparaisse au clic
 
-choixPerso();
+choixPerso(zoneTexte,actualPerso);
 
 
 
