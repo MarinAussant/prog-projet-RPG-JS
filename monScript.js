@@ -2,6 +2,7 @@ personnages = document.getElementById("persos");
 ennemis = document.getElementById("monstres");
 
 zoneTexte = document.getElementById("zoneTexte");
+bulleTexte = document.getElementById("bulle");
 
 listeMonstre =  [
                 [ennemis.children[0],"1","Gaelle",30,500,"waiting"],
@@ -36,23 +37,47 @@ function tourSuivant(laZoneDeTexte){
     else {
         laZoneDeTexte.style.display = 'none';
         actualPerso = listePerso[0];
-        attaque();
+        phaseAttaque();
     }
 }
 
-function attaque(){
-    listePerso.forEach(persoAct => {
-        if (persoAct[6] == "atq"){
-            monstreVictime[4] -= persoAct[3];
-            console.log(monstreVictime[4]);
-        }
-        if (persoAct[6] == "def"){
-            
-        }
-        if (persoAct[6] == "spe"){
-            
-        }
-    });
+function phaseAttaque(){
+
+    setTimeout(() => {
+
+        bulleTexte.style.backgroundColor = "black";
+        listePerso.forEach(persoAct => {
+            if (persoAct[6] == "atq"){
+                monstreVictime[4] -= persoAct[3];
+                setTimeout(() => {
+                    bulleTexte.firstElementChild.innerHTML = persoAct[2]+" attaque simplement le monstre et lui inflige "+persoAct[3]+" de dégat !";
+                },((parseInt(persoAct[1])-1)*2000));
+
+            }
+            if (persoAct[6] == "def"){
+                
+            }
+            if (persoAct[6] == "spe"){
+                
+            }
+        });
+
+    },1000);
+
+    setTimeout(()=> {
+        //bulleTexte.innerHTML = "";
+        bulleTexte.style.backgroundColor = "red";
+        listeMonstre.forEach(monstreAct => {
+            persoVictime = Math.floor(Math.random()*4);
+            console.log(persoVictime);
+            listePerso[persoVictime][4] -= monstreAct[3];
+            setTimeout(()=>{
+                bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+monstreAct[3]+" de dégat !";
+            },((parseInt(monstreAct[1])-1)*2000))
+        });
+
+    },13000);
+    
 }
 
 texteAtq.onclick = function() {
@@ -94,21 +119,4 @@ listeMonstre[2][0].onclick = function(){
     monstreVictime[0].style.border = "thick solid #FF0000";
 }
 
-/*
-listeMonstre.forEach(montreAct => {
-    montreAct[0].onclick = function() { 
-        monstreVictime = parseInt(monstreAct[1]);
-        console.log(monstreVictime);
-        monstreVictime[0].style.border = "thick solid #FF0000";
-        
-    }
-});
-*/
-
-//modif pour qu'une border rouge apparaisse au clic
-
 choixPerso(zoneTexte,actualPerso);
-
-
-
-// Exercice : débuggez ce script :)
