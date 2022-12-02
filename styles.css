@@ -41,8 +41,9 @@ body {
 .bulle{
     display: flex;
     color: azure;
-    width: 50%;
-    height: 100px;
+    width: 35%;
+    height: 75px;
+    margin: 30px;
     align-content: center;
     justify-content: center;
     background-color: none;

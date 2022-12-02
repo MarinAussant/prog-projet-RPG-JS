@@ -7,14 +7,14 @@ bulleTexte = document.getElementById("bulle");
 listeMonstre =  [
                 [ennemis.children[0],"1","Gaelle",30,500,"waiting"],
                 [ennemis.children[1],"2","John",10,2000,"waiting"],
-                [ennemis.children[2],"3","Yohann",20,1000,"waiting"]
+                [ennemis.children[2],"3","Yoann",20,1000,"waiting"]
                 ];
 
 listePerso =    [
-                [personnages.children[0],"1","Jean",100,100,150,"waiting","Epée furtive","inut","alive"],
-                [personnages.children[1],"2","Rika",90,110,40,"waiting","Soin","inut","alive"],
-                [personnages.children[2],"3","Lubin",150,80,250,"waiting","Attaque Lourde","inut","alive"],
-                [personnages.children[3],"4","Claude",120,150,2,"waiting","Resistance aux dégats","inut","alive"]
+                [personnages.children[0],"1","Jean",100,100,150,"waiting","Epée furtive","inut","t-atq","alive"],
+                [personnages.children[1],"2","Rika",90,110,40,"waiting","Energie des 100 soleils","inut","t-soin","alive"],
+                [personnages.children[2],"3","Lubin",150,80,250,"waiting","Attaque Lourde","inut","t-atq","alive"],
+                [personnages.children[3],"4","Claude",120,150,2,"waiting","Resistance aux dégats","inut","t-def","alive"]
                 ];
 
 texteAtq = zoneTexte.children[1];
@@ -48,35 +48,58 @@ function phaseAttaque(){
         bulleTexte.style.backgroundColor = "black";
         listePerso.forEach(persoAct => {
             if (persoAct[6] == "atq"){
-                monstreVictime[4] -= persoAct[3];
                 setTimeout(() => {
-                    bulleTexte.firstElementChild.innerHTML = persoAct[2]+" attaque simplement le monstre et lui inflige "+persoAct[3]+" de dégat !";
+                    monstreVictime[4] -= persoAct[3];
+                    bulleTexte.firstElementChild.innerHTML = persoAct[2]+" attaque simplement "+monstreVictime[2]+" et lui inflige "+persoAct[3]+" de dégat !";
                 },((parseInt(persoAct[1])-1)*2000));
 
             }
-            if (persoAct[6] == "def"){
-                
-            }
             if (persoAct[6] == "spe"){
-                
+                if (persoAct[9] == "t-atq"){
+                    setTimeout(() => {
+                        monstreVictime[4] -= persoAct[5];
+                        bulleTexte.firstElementChild.innerHTML = persoAct[2]+" utilise son attaque spéciale '"+persoAct[7]+"' sur "+monstreVictime[2]+" et lui inflige "+persoAct[5]+" de dégat !";
+                    },((parseInt(persoAct[1])-1)*2000));
+                }
+                if (persoAct[9] == "t-soin"){
+                    setTimeout(() => {
+                        listePerso.forEach(persoSoin => {
+                            persoSoin[4] += persoAct[5];
+                        })
+                        bulleTexte.firstElementChild.innerHTML = persoAct[2]+" utilise sa compétence spéciale '"+persoAct[7]+"' et soigne tous les personnages de"+persoAct[5]+" HP !";
+                    },((parseInt(persoAct[1])-1)*2000));
+                }
+            }
+            if (persoAct[6] == "def"){
+                bulleTexte.firstElementChild.innerHTML = persoAct[2]+" se défend, il recevra 3 fois moins de dégat au prochain tour !";
             }
         });
 
     },1000);
 
     setTimeout(()=> {
-        //bulleTexte.innerHTML = "";
+
         bulleTexte.style.backgroundColor = "red";
         listeMonstre.forEach(monstreAct => {
-            persoVictime = Math.floor(Math.random()*4);
-            console.log(persoVictime);
-            listePerso[persoVictime][4] -= monstreAct[3];
+            
             setTimeout(()=>{
-                bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+monstreAct[3]+" de dégat !";
-            },((parseInt(monstreAct[1])-1)*2000))
+                persoVictime = Math.floor(Math.random()*4);
+                console.log(persoVictime);
+
+                if (listePerso[persoVictime][6] == "def"){
+                    listePerso[persoVictime][4] -= monstreAct[3]/3;
+                    bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+monstreAct[3]+" de dégat malgré sa defense !";
+                }
+                // ICI (Modif le tableau Player pour ajouter des points de déf) 
+                else {
+                    listePerso[persoVictime][4] -= monstreAct[3];
+                    bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+monstreAct[3]+" de dégat !";
+                }
+            },((parseInt(monstreAct[1])-1)*2000));
+
         });
 
-    },13000);
+    },9000);
     
 }
 
