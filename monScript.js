@@ -69,6 +69,7 @@ actualPerso[0].style.border = "thick solid #FFD700";
 monstreVictime = listeMonstre[0];
 monstreVictime[0].style.border = "thick solid #FF0000";
 defOnclickMonstre();
+defOnclickAction();
 
 listePerso[0][0].style.display = "flex";
 listePerso[0][0].style.alignItems = "center";
@@ -257,29 +258,63 @@ function actuScene(){
         monstreVictime = listeMonstre[0];
         monstreVictime[0].style.border = "thick solid #FF0000";
         defOnclickMonstre();
+        defOnclickAction();
         bulleTexte.style.visibility = "hidden";
         choixPerso(zoneTexte,actualPerso);
 
     }
 }
 
-texteAtq.onclick = function() {
-    actualPerso[7] = "atq";
-    actualPerso[9] = "atq";
-    tourSuivant(zoneTexte);
+function defOnclickAction(){
+
+    // Le supression de l'option est faite pour tout le monde
+    // Il faut effectuer l'affichage ou non dans choixPerso()
+    
+
+    texteAtq.onclick = function() {
+
+        if (actualPerso[9] != "atq"){
+            actualPerso[7] = "atq";
+            actualPerso[9] = "atq";
+            texteAtq.innerHTML = " ̶A̶t̶t̶a̶q̶u̶e̶";
+            texteDef.innerHTML = "Défense";
+            if (actualPerso[13]>= 50){
+                texteSpe.innerHTML = "Capacité Spéciale"
+            }
+            tourSuivant(zoneTexte);
+            
+        }
+
+    }
+    
+    texteDef.onclick = function() {
+
+        if (actualPerso[9] != "def"){
+            actualPerso[7] = "def";
+            actualPerso[9] = "def";
+            texteDef.innerHTML = " ̶D̶é̶f̶e̶n̶s̶e̶";
+            texteAtq.innerHTML = "Attaque";
+            if (actualPerso[13]>= 50){
+                texteSpe.innerHTML = "Capacité Spéciale"
+            }
+            tourSuivant(zoneTexte);
+        }
+        
+    }
+    
+    texteSpe.onclick = function() {
+        if (actualPerso[9] != "spe" && actualPerso[13] >= 50){
+            actualPerso[7] = "spe";
+            actualPerso[9] = "spe";
+            texteSpe.innerHTML = " ̶C̶a̶p̶a̶c̶i̶t̶é̶ ̶S̶p̶é̶c̶i̶a̶l̶e̶";
+            texteAtq.innerHTML = "Attaque";
+            texteDef.innerHTML = "Défense";
+            tourSuivant(zoneTexte);
+        }
+    }
 }
 
-texteDef.onclick = function() {
-    actualPerso[7] = "def";
-    actualPerso[9] = "def";
-    tourSuivant(zoneTexte);
-}
 
-texteSpe.onclick = function() {
-    actualPerso[7] = "spe";
-    actualPerso[9] = "spe";
-    tourSuivant(zoneTexte);
-}
 
 function defOnclickMonstre(){
 
