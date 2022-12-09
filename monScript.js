@@ -68,6 +68,7 @@ actualPerso = listePerso[0];
 actualPerso[0].style.border = "thick solid #FFD700";
 monstreVictime = listeMonstre[0];
 monstreVictime[0].style.border = "thick solid #FF0000";
+defOnclickMonstre();
 
 listePerso[0][0].style.display = "flex";
 listePerso[0][0].style.alignItems = "center";
@@ -84,7 +85,7 @@ function choixPerso(laZoneDeTexte , actPerso){
 }
 
 function tourSuivant(laZoneDeTexte){
-    if (listePerso.indexOf(actualPerso) < 3){
+    if (listePerso.indexOf(actualPerso) < (listePerso.length - 1)){
         actualPerso[0].style.border = "none";
         actualPerso = listePerso[(listePerso.indexOf(actualPerso)+1)];
         actualPerso[0].style.border = "thick solid #FFD700";
@@ -217,7 +218,7 @@ function actuScene(){
             comptMonstreMort += 1;
         }
         else{
-            
+            tempListeMonstreVivant.push(monstreAct);
         }
     });
 
@@ -231,6 +232,7 @@ function actuScene(){
             if (persoAct[13]>=50){
                 persoAct[14]=true;
             }
+            tempListeJoueurVivant.push(persoAct);
         }
     });
 
@@ -248,8 +250,16 @@ function actuScene(){
         bulleTexte.firstElementChild.innerHTML = "Les deux camps se sont entre-tués... Match Nul !";
     }
     else{
+
+        listePerso = tempListeJoueurVivant;
+        listeMonstre = tempListeMonstreVivant;
+        actualPerso = listePerso[0];
+        monstreVictime = listeMonstre[0];
+        monstreVictime[0].style.border = "thick solid #FF0000";
+        defOnclickMonstre();
         bulleTexte.style.visibility = "hidden";
         choixPerso(zoneTexte,actualPerso);
+
     }
 }
 
@@ -271,25 +281,16 @@ texteSpe.onclick = function() {
     tourSuivant(zoneTexte);
 }
 
-listeMonstre[0][0].onclick = function(){
-    monstreVictime[0].style.border = "none";
-    monstreVictime = listeMonstre[0]
-    console.log(monstreVictime);
-    monstreVictime[0].style.border = "thick solid #FF0000";
-}
+function defOnclickMonstre(){
 
-listeMonstre[1][0].onclick = function(){
-    monstreVictime[0].style.border = "none";
-    monstreVictime = listeMonstre[1]
-    console.log(monstreVictime);
-    monstreVictime[0].style.border = "thick solid #FF0000";
-}
-
-listeMonstre[2][0].onclick = function(){
-    monstreVictime[0].style.border = "none";
-    monstreVictime = listeMonstre[2]
-    console.log(monstreVictime);
-    monstreVictime[0].style.border = "thick solid #FF0000";
+    listeMonstre.forEach(monstreAct => {
+        monstreAct[0].onclick = function(){
+            monstreVictime[0].style.border = "none";
+            monstreVictime = monstreAct;
+            console.log(monstreVictime);
+            monstreVictime[0].style.border = "thick solid #FF0000";
+        }
+    });
 }
 
 choixPerso(zoneTexte,actualPerso);
