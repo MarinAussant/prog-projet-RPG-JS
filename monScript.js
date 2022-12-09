@@ -25,32 +25,35 @@ nom3 = document.getElementById("nom3");
 nom4 = document.getElementById("nom4");
 
 listeMonstre =  [
-                [ennemis.children[0],"1","Gaelle",30,500,"waiting"],
-                [ennemis.children[1],"2","John",10,2000,"waiting"],
-                [ennemis.children[2],"3","Yoann",20,1000,"waiting"]
+                [ennemis.children[0],"1","Gaelle",30,500,"alive"],
+                [ennemis.children[1],"2","John",200,2000,"alive"],
+                [ennemis.children[2],"3","Yoann",20,1000,"alive"]
                 ];
 
 listePerso =    [
-                [personnages.children[3],"1","Jean",100,100,1,150,"waiting","Epée furtive","inut","t-atq","alive",100,100],
-                [personnages.children[7],"2","Rika",90,110,1,40,"waiting","Energie des 100 soleils","inut","t-soin","alive",110,100],
-                [personnages.children[11],"3","Lubin",150,80,1,250,"waiting","Attaque Lourde","inut","t-atq","alive",80,100],
-                [personnages.children[15],"4","Claude",120,150,1,1,"waiting","Resistance aux dégats","inut","t-def","alive",150,100]
+                [personnages.children[0],"1","Jean",3000,100,1,150,"waiting","Epée furtive","inut","t-atq","alive",100,100,true],
+                [personnages.children[1],"2","Rika",90,110,1,40,"waiting","Energie des 100 soleils","inut","t-soin","alive",110,100,true],
+                [personnages.children[2],"3","Lubin",150,80,1,250,"waiting","Attaque Lourde","inut","t-atq","alive",80,100,true],
+                [personnages.children[3],"4","Claude",120,150,1,1,"waiting","Resistance aux dégats","inut","t-def","alive",150,100,true]
                 ];
 
-texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][4]+" - Def : "+listePerso[0][5];
-texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][4]+" - Def : "+listePerso[1][5];
-texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][4]+" - Def : "+listePerso[2][5];
-texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][4]+" - Def : "+listePerso[3][5];
+texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][3]+" - Def : "+listePerso[0][5];
+texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][3]+" - Def : "+listePerso[1][5];
+texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][3]+" - Def : "+listePerso[2][5];
+texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][3]+" - Def : "+listePerso[3][5];
 
-barreDeVie1.innerHTML = "HP : "+listePerso[0][3];
-barreDeVie2.innerHTML = "HP : "+listePerso[1][3];
-barreDeVie3.innerHTML = "HP : "+listePerso[2][3];
-barreDeVie4.innerHTML = "HP : "+listePerso[3][3];
+barreDeVie1.innerHTML = "HP : "+listePerso[0][4];
+barreDeVie2.innerHTML = "HP : "+listePerso[1][4];
+barreDeVie3.innerHTML = "HP : "+listePerso[2][4];
+barreDeVie4.innerHTML = "HP : "+listePerso[3][4];
 
-barreDeMana1.innerHTML = "Mana : "+listePerso[0][3];
-barreDeMana2.innerHTML = "Mana : "+listePerso[1][3];
-barreDeMana3.innerHTML = "Mana : "+listePerso[2][3];
-barreDeMana4.innerHTML = "Mana : "+listePerso[3][3];
+barreDeMana1.innerHTML = "Mana : "+listePerso[0][13];
+barreDeMana2.innerHTML = "Mana : "+listePerso[1][13];
+barreDeMana3.innerHTML = "Mana : "+listePerso[2][13];
+barreDeMana4.innerHTML = "Mana : "+listePerso[3][13];
+
+listeJoueurVivant = [];
+listeMonstreVivant = [];
 
 nom1.innerHTML = listePerso[0][2];
 nom2.innerHTML = listePerso[1][2];
@@ -62,7 +65,18 @@ texteDef = zoneTexte.children[2];
 texteSpe = zoneTexte.children[3];
 
 actualPerso = listePerso[0];
+actualPerso[0].style.border = "thick solid #FFD700";
 monstreVictime = listeMonstre[0];
+monstreVictime[0].style.border = "thick solid #FF0000";
+
+listePerso[0][0].style.display = "flex";
+listePerso[0][0].style.alignItems = "center";
+listePerso[1][0].style.display = "flex"; 
+listePerso[1][0].style.alignItems = "center";
+listePerso[2][0].style.display = "flex";
+listePerso[2][0].style.alignItems = "center";
+listePerso[3][0].style.display = "flex";
+listePerso[3][0].style.alignItems = "center"; 
 
 function choixPerso(laZoneDeTexte , actPerso){
     laZoneDeTexte.firstElementChild.innerHTML = "Que voulez vous que "+actPerso[2]+" fasse ?";
@@ -71,37 +85,40 @@ function choixPerso(laZoneDeTexte , actPerso){
 
 function tourSuivant(laZoneDeTexte){
     if (listePerso.indexOf(actualPerso) < 3){
+        actualPerso[0].style.border = "none";
         actualPerso = listePerso[(listePerso.indexOf(actualPerso)+1)];
+        actualPerso[0].style.border = "thick solid #FFD700";
         choixPerso(laZoneDeTexte,actualPerso);
     }
     else {
         laZoneDeTexte.style.display = 'none';
+        actualPerso[0].style.border = "none";
         actualPerso = listePerso[0];
         phaseAttaque();
     }
 }
 
 function updateStat(){
-    texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][4]+" - Def : "+listePerso[0][5];
-    texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][4]+" - Def : "+listePerso[1][5];
-    texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][4]+" - Def : "+listePerso[2][5];
-    texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][4]+" - Def : "+listePerso[3][5];
+    texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][3]+" - Def : "+listePerso[0][5];
+    texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][3]+" - Def : "+listePerso[1][5];
+    texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][3]+" - Def : "+listePerso[2][5];
+    texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][3]+" - Def : "+listePerso[3][5];
 
-    barreDeVie1.innerHTML = "HP : "+listePerso[0][3];
-    barreDeVie2.innerHTML = "HP : "+listePerso[1][3];
-    barreDeVie3.innerHTML = "HP : "+listePerso[2][3];
-    barreDeVie4.innerHTML = "HP : "+listePerso[3][3];
+    barreDeVie1.innerHTML = "HP : "+listePerso[0][4];
+    barreDeVie2.innerHTML = "HP : "+listePerso[1][4];
+    barreDeVie3.innerHTML = "HP : "+listePerso[2][4];
+    barreDeVie4.innerHTML = "HP : "+listePerso[3][4];
 
-    barreDeMana1.innerHTML = "Mana : "+listePerso[0][3];
-    barreDeMana2.innerHTML = "Mana : "+listePerso[1][3];
-    barreDeMana3.innerHTML = "Mana : "+listePerso[2][3];
-    barreDeMana4.innerHTML = "Mana : "+listePerso[3][3];
+    barreDeMana1.innerHTML = "Mana : "+listePerso[0][13];
+    barreDeMana2.innerHTML = "Mana : "+listePerso[1][13];
+    barreDeMana3.innerHTML = "Mana : "+listePerso[2][13];
+    barreDeMana4.innerHTML = "Mana : "+listePerso[3][13];
 }
 
 function phaseAttaque(){
 
     setTimeout(() => {
-
+        bulleTexte.style.visibility = "visible";
         bulleTexte.style.backgroundColor = "black";
         listePerso.forEach(persoAct => {
             setTimeout(() => {
@@ -112,6 +129,11 @@ function phaseAttaque(){
                 }
 
                 if (persoAct[7] == "spe"){
+
+                    persoAct[13] -= 50;
+                    if (persoAct[13]<50){
+                        persoAct[14] = false;
+                    }
 
                     if (persoAct[9] == "t-atq"){
                         monstreVictime[4] -= persoAct[6];
@@ -138,6 +160,10 @@ function phaseAttaque(){
                     bulleTexte.firstElementChild.innerHTML = persoAct[2]+" se défend, cela renforce sa défense de 2 pour le prochain tour !";
                 }
 
+                if(monstreVictime[4]<=0){
+                    monstreVictime[4] = 0;
+                    monstreVictime[5] = "dead";
+                }
                 updateStat();
 
             },(parseInt(persoAct[1])-1)*2000);
@@ -157,7 +183,10 @@ function phaseAttaque(){
 
                 listePerso[persoVictime][4] -= Math.floor(monstreAct[3] / listePerso[persoVictime][5]);
                 bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+Math.floor(monstreAct[3] / listePerso[persoVictime][5])+" de dégat !";
-
+                if(listePerso[persoVictime][4]<=0){
+                    listePerso[persoVictime][4] = 0;
+                    listePerso[persoVictime][11] = "dead";
+                }
                 updateStat();
 
             },((parseInt(monstreAct[1])-1)*2000));
@@ -165,7 +194,63 @@ function phaseAttaque(){
         });
 
     },9000);
+
+    setTimeout(()=>{
+        actuScene();
+    },16000);
     
+}
+
+function actuScene(){
+
+    comptJoueurMort = 0;
+
+    comptMonstreMort = 0;
+
+    tempListeMonstreVivant = [];
+
+    tempListeJoueurVivant = [];
+   
+    listeMonstre.forEach(monstreAct => {
+        if(monstreAct[5]=="dead"){
+            monstreAct[0].style.visibility = "hidden";
+            comptMonstreMort += 1;
+        }
+        else{
+            
+        }
+    });
+
+    listePerso.forEach(persoAct => {
+        if(persoAct[11]=="dead"){
+            persoAct[0].style.visibility = "hidden";
+            comptJoueurMort += 1;
+        }
+        else{
+            persoAct[13]+=10;
+            if (persoAct[13]>=50){
+                persoAct[14]=true;
+            }
+        }
+    });
+
+    if (comptJoueurMort == listePerso.lenght && comptMonstreMort < listeMonstre.lenght){
+        bulleTexte.style.backgroundColor = "red";
+        bulleTexte.firstElementChild.innerHTML = "Tous les personnages sont morts. Les monstres ont gagné...";
+    }
+    else if (comptJoueurMort < listePerso.lenght && comptMonstreMort == listeMonstre.lenght){
+        bulleTexte.style.backgroundColor = "black";
+        bulleTexte.firstElementChild.innerHTML = "Tous les monstres sont morts. Vous avez gagné !";
+    }
+    else if (comptJoueurMort == listePerso.lenght && comptMonstreMort == listeMonstre.lenght){
+        bulleTexte.style.backgroundColor = "blanc";
+        bulleTexte.style.color = "black";
+        bulleTexte.firstElementChild.innerHTML = "Les deux camps se sont entre-tués... Match Nul !";
+    }
+    else{
+        bulleTexte.style.visibility = "hidden";
+        choixPerso(zoneTexte,actualPerso);
+    }
 }
 
 texteAtq.onclick = function() {

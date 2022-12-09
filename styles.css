@@ -9,6 +9,9 @@ body {
     flex-flow: row wrap;
     align-content: center;
     justify-content: space-around;
+    width: 98%;
+    height: 58%;
+    margin: 1%;
 }
 
 .personnages{
@@ -49,7 +52,7 @@ body {
 .nom{
     display: flex;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 5px;
     margin-bottom: 1px;
     font-size: large;
 }
@@ -61,8 +64,9 @@ body {
 .zoneTexte{
     display: none;
     flex-flow: column wrap;
-    width: auto;
-    height: auto;
+    width: 98%;
+    height: 28%;
+    margin: 1%;
     background-color: black;
     color: azure;
     align-items: center;
@@ -76,12 +80,24 @@ body {
 
 .bulle{
     display: flex;
+    visibility:hidden;
     color: azure;
-    width: 35%;
-    height: 75px;
-    margin: 30px;
+    width: 65%;
+    height: 8%;
+    margin: 1%;
     align-content: center;
     justify-content: center;
     background-color: none;
 }
+
+.bulle p {
+    font-style: 2%;
+}
+
+.personnages img {
+    width: 20%;
+    height: 20%;
+}
+
+
 
