@@ -128,20 +128,14 @@ function tourSuivant(laZoneDeTexte){
 }
 
 function updateStat(){
-    texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][3]+" - Def : "+listePerso[0][5];
-    texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][3]+" - Def : "+listePerso[1][5];
-    texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][3]+" - Def : "+listePerso[2][5];
-    texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][3]+" - Def : "+listePerso[3][5];
 
-    barreDeVie1.innerHTML = "HP : "+listePerso[0][4];
-    barreDeVie2.innerHTML = "HP : "+listePerso[1][4];
-    barreDeVie3.innerHTML = "HP : "+listePerso[2][4];
-    barreDeVie4.innerHTML = "HP : "+listePerso[3][4];
+    listePerso.forEach(persoAct => {
+        console.log(persoAct[0]);
+        persoAct[0].children[0].children[1].innerHTML = "Attaque : "+persoAct[3]+" - Def : "+persoAct[5];
+        persoAct[0].children[1].children[0].innerHTML = "Mana : "+persoAct[13];
+        persoAct[0].children[1].children[1].innerHTML = "HP : "+persoAct[4];
+    })
 
-    barreDeMana1.innerHTML = "Mana : "+listePerso[0][13];
-    barreDeMana2.innerHTML = "Mana : "+listePerso[1][13];
-    barreDeMana3.innerHTML = "Mana : "+listePerso[2][13];
-    barreDeMana4.innerHTML = "Mana : "+listePerso[3][13];
 }
 
 function phaseAttaque(){
@@ -149,7 +143,9 @@ function phaseAttaque(){
     setTimeout(() => {
         bulleTexte.style.visibility = "visible";
         bulleTexte.style.backgroundColor = "black";
+        tempNumPerso = -1;
         listePerso.forEach(persoAct => {
+            tempNumPerso += 1;
             setTimeout(() => {
 
                 if (persoAct[7] == "atq"){
@@ -164,7 +160,7 @@ function phaseAttaque(){
                         persoAct[14] = false;
                     }
 
-                    if (persoAct[9] == "t-atq"){
+                    if (persoAct[10] == "t-atq"){
                         monstreVictime[4] -= persoAct[6];
                         bulleTexte.firstElementChild.innerHTML = persoAct[2]+" utilise son attaque spéciale '"+persoAct[8]+"' sur "+monstreVictime[2]+" et lui inflige "+persoAct[6]+" de dégat !";
                     }
@@ -195,21 +191,22 @@ function phaseAttaque(){
                 }
                 updateStat();
 
-            },(parseInt(persoAct[1])-1)*2000);
+            },tempNumPerso*2000);
             
         });
 
     },1000);
-
     setTimeout(()=> {
 
         bulleTexte.style.backgroundColor = "red";
+        tempNumMonstre = -1;
         listeMonstre.forEach(monstreAct => {
-            
+            tempNumMonstre +=1;
             setTimeout(()=>{
 
-                persoVictime = Math.floor(Math.random()*4);
-
+                persoVictime = Math.floor(Math.random()*(listePerso.length));
+                console.log(listePerso);
+                console.log(persoVictime);
                 listePerso[persoVictime][4] -= Math.floor(monstreAct[3] / listePerso[persoVictime][5]);
                 bulleTexte.firstElementChild.innerHTML = monstreAct[2]+" attaque "+listePerso[persoVictime][2]+" et lui inflige "+Math.floor(monstreAct[3] / listePerso[persoVictime][5])+" de dégat !";
                 if(listePerso[persoVictime][4]<=0){
@@ -218,15 +215,15 @@ function phaseAttaque(){
                 }
                 updateStat();
 
-            },((parseInt(monstreAct[1])-1)*2000));
+            },(tempNumMonstre*2000));
 
         });
 
-    },9000);
+    },9000 - ((4 - listePerso.length)*2000));
 
     setTimeout(()=>{
         actuScene();
-    },16000);
+    },2000 * listeMonstre.length + 2000 * listePerso.length);
     
 }
 
@@ -261,15 +258,15 @@ function actuScene(){
         }
     });
 
-    if (comptJoueurMort == listePerso.lenght && comptMonstreMort < listeMonstre.lenght){
+    if (comptJoueurMort == listePerso.length && comptMonstreMort < listeMonstre.length){
         bulleTexte.style.backgroundColor = "red";
         bulleTexte.firstElementChild.innerHTML = "Tous les personnages sont morts. Les monstres ont gagné...";
     }
-    else if (comptJoueurMort < listePerso.lenght && comptMonstreMort == listeMonstre.lenght){
+    else if (comptJoueurMort < listePerso.length && comptMonstreMort == listeMonstre.length){
         bulleTexte.style.backgroundColor = "black";
         bulleTexte.firstElementChild.innerHTML = "Tous les monstres sont morts. Vous avez gagné !";
     }
-    else if (comptJoueurMort == listePerso.lenght && comptMonstreMort == listeMonstre.lenght){
+    else if (comptJoueurMort == listePerso.length && comptMonstreMort == listeMonstre.length){
         bulleTexte.style.backgroundColor = "blanc";
         bulleTexte.style.color = "black";
         bulleTexte.firstElementChild.innerHTML = "Les deux camps se sont entre-tués... Match Nul !";
@@ -279,6 +276,7 @@ function actuScene(){
         listePerso = tempListeJoueurVivant;
         listeMonstre = tempListeMonstreVivant;
         actualPerso = listePerso[0];
+        actualPerso[0].style.border = "thick solid #FFD700";
         monstreVictime = listeMonstre[0];
         monstreVictime[0].style.border = "thick solid #FF0000";
         defOnclickMonstre();
@@ -299,6 +297,7 @@ function defOnclickAction(){
 
         if (actualPerso[9] != "atq"){
             actualPerso[7] = "atq";
+            actualPerso[9] = "atq";
             tourSuivant(zoneTexte);
         }
     }
