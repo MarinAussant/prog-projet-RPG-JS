@@ -81,8 +81,35 @@ listePerso[3][0].style.display = "flex";
 listePerso[3][0].style.alignItems = "center"; 
 
 function choixPerso(laZoneDeTexte , actPerso){
+    
     laZoneDeTexte.firstElementChild.innerHTML = "Que voulez vous que "+actPerso[2]+" fasse ?";
     laZoneDeTexte.style.display = 'flex';
+
+    if (actPerso[9]=="atq"){
+        texteAtq.innerHTML = " ̶A̶t̶t̶a̶q̶u̶e̶";
+    }
+    else {
+        texteAtq.innerHTML = "Attaque";
+    }
+    
+    if (actPerso[9]=="def"){
+        texteDef.innerHTML = " ̶D̶é̶f̶e̶n̶s̶e̶";
+    }
+    else {
+        texteDef.innerHTML = "Défense";
+    }
+
+    if (actPerso[9]=="spe" || actPerso[13] < 50){
+        texteSpe.innerHTML = " ̶C̶a̶p̶a̶c̶i̶t̶é̶ ̶S̶p̶é̶c̶i̶a̶l̶e̶";
+    }
+    else {
+        texteSpe.innerHTML = "Capacité Spéciale";
+    }
+
+
+
+    texteAtq.visibility
+
 }
 
 function tourSuivant(laZoneDeTexte){
@@ -230,9 +257,6 @@ function actuScene(){
         }
         else{
             persoAct[13]+=10;
-            if (persoAct[13]>=50){
-                persoAct[14]=true;
-            }
             tempListeJoueurVivant.push(persoAct);
         }
     });
@@ -275,16 +299,8 @@ function defOnclickAction(){
 
         if (actualPerso[9] != "atq"){
             actualPerso[7] = "atq";
-            actualPerso[9] = "atq";
-            texteAtq.innerHTML = " ̶A̶t̶t̶a̶q̶u̶e̶";
-            texteDef.innerHTML = "Défense";
-            if (actualPerso[13]>= 50){
-                texteSpe.innerHTML = "Capacité Spéciale"
-            }
             tourSuivant(zoneTexte);
-            
         }
-
     }
     
     texteDef.onclick = function() {
@@ -292,23 +308,14 @@ function defOnclickAction(){
         if (actualPerso[9] != "def"){
             actualPerso[7] = "def";
             actualPerso[9] = "def";
-            texteDef.innerHTML = " ̶D̶é̶f̶e̶n̶s̶e̶";
-            texteAtq.innerHTML = "Attaque";
-            if (actualPerso[13]>= 50){
-                texteSpe.innerHTML = "Capacité Spéciale"
-            }
             tourSuivant(zoneTexte);
         }
-        
     }
     
     texteSpe.onclick = function() {
         if (actualPerso[9] != "spe" && actualPerso[13] >= 50){
             actualPerso[7] = "spe";
             actualPerso[9] = "spe";
-            texteSpe.innerHTML = " ̶C̶a̶p̶a̶c̶i̶t̶é̶ ̶S̶p̶é̶c̶i̶a̶l̶e̶";
-            texteAtq.innerHTML = "Attaque";
-            texteDef.innerHTML = "Défense";
             tourSuivant(zoneTexte);
         }
     }
