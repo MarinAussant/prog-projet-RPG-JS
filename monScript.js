@@ -9,10 +9,18 @@ texteStatsPerso2 = document.getElementById("stat2");
 texteStatsPerso3 = document.getElementById("stat3");
 texteStatsPerso4 = document.getElementById("stat4");
 
+texteStatsMonstre1 = document.getElementById("statM1");
+texteStatsMonstre2 = document.getElementById("statM2");
+texteStatsMonstre3 = document.getElementById("statM3");
+
 barreDeVie1 = document.getElementById("life1");
 barreDeVie2 = document.getElementById("life2");
 barreDeVie3 = document.getElementById("life3");
 barreDeVie4 = document.getElementById("life4");
+
+barreDeVieM1 = document.getElementById("lifeM1");
+barreDeVieM2 = document.getElementById("lifeM2");
+barreDeVieM3 = document.getElementById("lifeM3");
 
 barreDeMana1 = document.getElementById("mana1");
 barreDeMana2 = document.getElementById("mana2");
@@ -24,41 +32,23 @@ nom2 = document.getElementById("nom2");
 nom3 = document.getElementById("nom3");
 nom4 = document.getElementById("nom4");
 
+nomM1 = document.getElementById("nomM1");
+nomM2 = document.getElementById("nomM2");
+nomM3 = document.getElementById("nomM3");
+
 listeMonstre =  [
-                [ennemis.children[0],"1","Gaelle",30,500,"alive"],
-                [ennemis.children[1],"2","John",200,2000,"alive"],
-                [ennemis.children[2],"3","Yoann",20,1000,"alive"]
+                [ennemis.children[0],"1","Dracul-Gaelle",30,500,"alive"],
+                [ennemis.children[1],"2","Grand-John",200,2000,"alive"],
+                [ennemis.children[2],"3","Yoann-Ô",20,1000,"alive"]
                 ];
 
 listePerso =    [
-                [personnages.children[0],"1","Jean",3000,100,1,150,"waiting","Epée furtive","inut","t-atq","alive",100,100,true],
+                [personnages.children[0],"1","J-M",3000,100,1,150,"waiting","Epée furtive","inut","t-atq","alive",100,100,true],
                 [personnages.children[1],"2","Rika",90,110,1,40,"waiting","Energie des 100 soleils","inut","t-soin","alive",110,100,true],
-                [personnages.children[2],"3","Lubin",150,80,1,250,"waiting","Attaque Lourde","inut","t-atq","alive",80,100,true],
-                [personnages.children[3],"4","Claude",120,150,1,1,"waiting","Resistance aux dégats","inut","t-def","alive",150,100,true]
+                [personnages.children[2],"3","Lubinbinks",150,80,1,250,"waiting","Attaque Lourde","inut","t-atq","alive",80,100,true],
+                [personnages.children[3],"4","Claude-Ô",120,150,1,1,"waiting","Resistance aux dégats","inut","t-def","alive",150,100,true]
                 ];
 
-texteStatsPerso1.innerHTML = "Attaque : "+listePerso[0][3]+" - Def : "+listePerso[0][5];
-texteStatsPerso2.innerHTML = "Attaque : "+listePerso[1][3]+" - Def : "+listePerso[1][5];
-texteStatsPerso3.innerHTML = "Attaque : "+listePerso[2][3]+" - Def : "+listePerso[2][5];
-texteStatsPerso4.innerHTML = "Attaque : "+listePerso[3][3]+" - Def : "+listePerso[3][5];
-
-barreDeVie1.innerHTML = "HP : "+listePerso[0][4];
-barreDeVie2.innerHTML = "HP : "+listePerso[1][4];
-barreDeVie3.innerHTML = "HP : "+listePerso[2][4];
-barreDeVie4.innerHTML = "HP : "+listePerso[3][4];
-
-barreDeMana1.innerHTML = "Mana : "+listePerso[0][13];
-barreDeMana2.innerHTML = "Mana : "+listePerso[1][13];
-barreDeMana3.innerHTML = "Mana : "+listePerso[2][13];
-barreDeMana4.innerHTML = "Mana : "+listePerso[3][13];
-
-listeJoueurVivant = [];
-listeMonstreVivant = [];
-
-nom1.innerHTML = listePerso[0][2];
-nom2.innerHTML = listePerso[1][2];
-nom3.innerHTML = listePerso[2][2];
-nom4.innerHTML = listePerso[3][2];
 
 texteAtq = zoneTexte.children[1];
 texteDef = zoneTexte.children[2];
@@ -67,18 +57,33 @@ texteSpe = zoneTexte.children[3];
 actualPerso = listePerso[0];
 actualPerso[0].style.border = "thick solid #FFD700";
 monstreVictime = listeMonstre[0];
-monstreVictime[0].style.border = "thick solid #FF0000";
+monstreVictime[0].children[1].style.border = "thick solid #FF0000";
+updateStat();
 defOnclickMonstre();
 defOnclickAction();
 
-listePerso[0][0].style.display = "flex";
-listePerso[0][0].style.alignItems = "center";
-listePerso[1][0].style.display = "flex"; 
-listePerso[1][0].style.alignItems = "center";
-listePerso[2][0].style.display = "flex";
-listePerso[2][0].style.alignItems = "center";
-listePerso[3][0].style.display = "flex";
-listePerso[3][0].style.alignItems = "center"; 
+
+
+listePerso.forEach(persoAct => {
+    persoAct[0].style.display = "flex";
+    persoAct[0].style.alignItems = "center";
+})
+
+listeMonstre.forEach(monstreAct => {
+    monstreAct[0].style.display = "flex";
+    monstreAct[0].style.alignItems = "center"; 
+})
+
+listeMonstre.forEach(monstreAct => {
+    monstreAct[0].children[1].onmouseover = () => {
+        monstreAct[0].children[0].style.visibility = "visible"
+    }
+    monstreAct[0].children[1].onmouseout= () =>{
+        monstreAct[0].children[0].style.visibility = "hidden"
+    }
+    monstreAct[0].children[0].style.visibility = "hidden"
+})
+
 
 function choixPerso(laZoneDeTexte , actPerso){
     
@@ -130,10 +135,16 @@ function tourSuivant(laZoneDeTexte){
 function updateStat(){
 
     listePerso.forEach(persoAct => {
-        console.log(persoAct[0]);
+        persoAct[0].children[0].children[0].innerHTML = persoAct[2];
         persoAct[0].children[0].children[1].innerHTML = "Attaque : "+persoAct[3]+" - Def : "+persoAct[5];
         persoAct[0].children[1].children[0].innerHTML = "Mana : "+persoAct[13];
         persoAct[0].children[1].children[1].innerHTML = "HP : "+persoAct[4];
+    })
+
+    listeMonstre.forEach(monstreAct => {
+        monstreAct[0].children[0].children[0].innerHTML = monstreAct[2];
+        monstreAct[0].children[0].children[1].innerHTML = "Attaque : "+monstreAct[3];
+        monstreAct[0].children[0].children[2].children[0].innerHTML = "HP : "+monstreAct[4];
     })
 
 }
@@ -278,7 +289,7 @@ function actuScene(){
         actualPerso = listePerso[0];
         actualPerso[0].style.border = "thick solid #FFD700";
         monstreVictime = listeMonstre[0];
-        monstreVictime[0].style.border = "thick solid #FF0000";
+        monstreVictime[0].children[1].style.border = "thick solid #FF0000";
         defOnclickMonstre();
         defOnclickAction();
         bulleTexte.style.visibility = "hidden";
@@ -320,16 +331,14 @@ function defOnclickAction(){
     }
 }
 
-
-
 function defOnclickMonstre(){
 
     listeMonstre.forEach(monstreAct => {
         monstreAct[0].onclick = function(){
-            monstreVictime[0].style.border = "none";
+            monstreVictime[0].children[1].style.border = "none";
             monstreVictime = monstreAct;
             console.log(monstreVictime);
-            monstreVictime[0].style.border = "thick solid #FF0000";
+            monstreVictime[0].children[1].style.border = "thick solid #FF0000";
         }
     });
 }
